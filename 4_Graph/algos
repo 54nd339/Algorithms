@@ -1,0 +1,8 @@
+Basic Graph (BFS, DFS)
+Single-source Shortest Paths:
+    Dijkstra's Algorithm
+All-pairs Shortest Paths:
+    Floyd-Warshall Algorithm
+Minimum Spanning Trees:
+    Krushkal's Algorithm
+    Prim's Algorithm

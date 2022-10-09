@@ -48,3 +48,13 @@ int main() {
         fractionalKnapsack(W, arr, n));
     return 0;
 }
+
+/*
+Enter the number of items: 3
+Enter the value and weight of each item :
+60 10
+100 20
+120 30
+Enter the capacity of the knapsack: 50
+Maximum value in a knapsack of capacity 50 is 240.00
+*/
