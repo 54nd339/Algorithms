@@ -39,8 +39,7 @@ int minKey(int *key, int *visited, int vertices) {
     int min = 9999, minIndex;
     for (int i = 0; i < vertices; i++) {
         if (visited[i] == 0 && key[i] < min) {
-            min = key[i];
-            minIndex = i;
+            min = key[i]; minIndex = i;
         }
     }
     return minIndex;

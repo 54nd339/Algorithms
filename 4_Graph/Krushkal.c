@@ -1,135 +1,131 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct dsu {
-    int *parent;
-    int *rank;
-    int n;
-} DSU;
-typedef struct graph {
-    int vertices, edges;
-    int **adjMatrix;
-} graph;
+typedef struct edge {
+    int u, v, w;
+} edge;
 
-graph *createGraph(int vertices, int edges) {
-    graph *g = (graph *)malloc(sizeof(graph));
-    g->vertices = vertices;
-    g->edges = edges;
-    g->adjMatrix = (int **)malloc(sizeof(int *) * vertices);
-    for (int i = 0; i < vertices; i++) {
-        g->adjMatrix[i] = (int *)malloc(sizeof(int) * vertices);
-        for (int j = 0; j < vertices; j++) {
-            g->adjMatrix[i][j] = 0;
-        }
-    }
-    int src, dest, weight;
-    for (int i = 0; i < g->edges; i++) {
-        printf("Enter Edge %d: ", i + 1);
-        scanf("%d %d %d", &src, &dest, &weight);
-        g->adjMatrix[src][dest] = weight;
-        g->adjMatrix[dest][src] = weight;
-    }
-    return g;
-}
-void printGraph(graph *g) {
-    for (int i = 0; i < g->vertices; i++) {
-        printf("Vertex %d is connected to: ", i);
-        for (int j = 0; j < g->vertices; j++) {
-            if (g->adjMatrix[i][j] != 0) {
-                printf("%d (%d) ", j, g->adjMatrix[i][j]);
-            }
-        }
-        printf("\n");
-    }
-}
+typedef struct heap {
+    int size; // no. of edges
+    edge *arr;
+} heap;
 
-DSU *createDSU(int n) {
-    DSU *dsu = (DSU *)malloc(sizeof(DSU));
-    dsu->parent = (int *)malloc(sizeof(int) * n);
-    dsu->rank = (int *)malloc(sizeof(int) * n);
-    dsu->n = n;
-    for (int i = 0; i < n; i++) {
-        dsu->parent[i] = i;
-        dsu->rank[i] = 0;
-    }
-    return dsu;
+void swap(edge *a, edge *b) {
+    edge t = *a;
+    *a = *b;
+    *b = t;
 }
-int find(DSU *dsu, int x) {
-    if (dsu->parent[x] != x) {
-        dsu->parent[x] = find(dsu, dsu->parent[x]);
+// min-heapify
+void heapify(heap *h, int i) {
+    int smallest = i, l = 2*i+1, r = 2*i+2;
+    if (l < h->size && h->arr[l].w < h->arr[smallest].w) smallest = l;
+    if (r < h->size && h->arr[r].w < h->arr[smallest].w) smallest = r;
+    if (smallest != i) {
+        swap(&(h->arr[i]), &(h->arr[smallest]));
+        heapify(h, smallest);
     }
-    return dsu->parent[x];
 }
-void unionDSU(DSU *dsu, int x, int y) {
-    int xRoot = find(dsu, x);
-    int yRoot = find(dsu, y);
-    if (dsu->rank[xRoot] < dsu->rank[yRoot]) {
-        dsu->parent[xRoot] = yRoot;
-    } else if (dsu->rank[xRoot] > dsu->rank[yRoot]) {
-        dsu->parent[yRoot] = xRoot;
-    } else {
-        dsu->parent[yRoot] = xRoot;
-        dsu->rank[xRoot]++;
+edge extractMin(heap *h) {
+    if (h->size == 0) {
+        printf("Heap is empty\n");
+        exit(0);
     }
+    edge min = h->arr[0];
+    h->arr[0] = h->arr[h->size-1];
+    h->size--;
+    heapify(h, 0);
+    return min;
+}
+void insertNode(heap *h, edge e) {
+    h->size++;
+    int i = h->size - 1;
+    h->arr[i] = e;
+    int j = (i-1)/2;
+    while (i != 0 && h->arr[j].w > h->arr[i].w) {
+        swap(&(h->arr[i]), &(h->arr[j]));
+        i = j;
+        j = (i-1)/2;
+    }
+}
+void print(heap h) {
+    if (h.size == 0) {
+        printf("Heap is empty\n");
+        return;
+    }
+    for (int i = 0; i < h.size; ++i)
+        printf("%d %d %d\n", h.arr[i].u, h.arr[i].v, h.arr[i].w);
+    printf("\n");
 }
 
-void Krushkal(graph *g) {
-    DSU *dsu = createDSU(g->vertices);
-    int **adjMatrix = g->adjMatrix;
-    int minWeight = 0;
-    for (int i = 0; i < g->vertices - 1; i++) {
-        int minSrc, minDest, min = 9999;
-        for (int j = 0; j < g->vertices; j++) {
-            for (int k = 0; k < g->vertices; k++) {
-                if (adjMatrix[j][k] != 0 && adjMatrix[j][k] < min) {
-                    if (find(dsu, j) != find(dsu, k)) {
-                        min = adjMatrix[j][k];
-                        minSrc = j; minDest = k;
-                    }
-                }
-            }
-        }
-        unionDSU(dsu, minSrc, minDest);
-        printf("Edge %d: (%d, %d) cost: %d\n", i+1, minSrc, minDest, min);
-        minWeight += min;
-        adjMatrix[minSrc][minDest] = 0;
-        adjMatrix[minDest][minSrc] = 0;
-    }
-    printf("Minimum Weight: %d\n", minWeight);
+typedef struct subset {
+    int parent, rank;
+} subset;
+int find(subset *subsets, int i) {
+    if (subsets[i].parent != i)
+        subsets[i].parent = find(subsets, subsets[i].parent);
+    return subsets[i].parent;
 }
+void Union(subset *subsets, int x, int y) {
+    int xroot = find(subsets, x);
+    int yroot = find(subsets, y);
+    if (subsets[xroot].rank < subsets[yroot].rank)
+        subsets[xroot].parent = yroot;
+    else if (subsets[xroot].rank > subsets[yroot].rank)
+        subsets[yroot].parent = xroot;
+    else {
+        subsets[yroot].parent = xroot;
+        subsets[xroot].rank++;
+    }
+}
+
+void KruskalMST(heap *h, int V) {
+    edge result[V];
+    subset *subsets = (subset *)malloc(V * sizeof(subset));
+    for (int v = 0; v < V; ++v) {
+        subsets[v].parent = v;
+        subsets[v].rank = 0;
+    }
+    int e = 0, total = 0; 
+    while (e < V - 1) {
+        edge next_edge = extractMin(h);
+        int x = find(subsets, next_edge.u);
+        int y = find(subsets, next_edge.v);
+        if (x != y) {
+            result[e++] = next_edge;
+            total += next_edge.w;
+            Union(subsets, x, y);
+        }
+    }
+    for (int i = 0; i < e; ++i)
+        printf("%d %d %d\n", result[i].u, result[i].v, result[i].w);
+    printf("Total weight: %d\n", total);
+}
+
 int main() {
-    printf("Enter number of vertices: ");
-    int vertices; scanf("%d", &vertices);
-    printf("Enter number of edges: ");
-    int edges; scanf("%d", &edges);
-    graph *g = createGraph(vertices, edges);
-    
+    printf("Enter no. of vertices and edges: ");
+    int V, E; scanf("%d %d", &V, &E);
 
-    printf("\nGraph:\n");
-    printGraph(g);
-    
-    printf("\nKrushkal:\n");
-    Krushkal(g);
+    heap h; h.size = 0;
+    h.arr = (edge *)malloc(E * sizeof(edge));
+    for (int i = 0; i < E; ++i) {
+        scanf("%d %d %d", &(h.arr[i].u), &(h.arr[i].v), &(h.arr[i].w));
+        insertNode(&h, h.arr[i]);
+    }
+
+    printf("MST:\n");
+    KruskalMST(&h, V);
     return 0;
 }
+
 /*
-Enter number of vertices: 4
-Enter number of edges: 5
-Enter edge 0: 0 1 10
-Enter edge 1: 0 2 6
-Enter edge 2: 0 3 5
-Enter edge 3: 1 3 15
-Enter edge 4: 2 3 4
-
-Graph:
-Vertex 0 is connected to: 1 (10) 2 (6) 3 (5)
-Vertex 1 is connected to: 0 (10) 3 (15)
-Vertex 2 is connected to: 0 (6) 3 (4)
-Vertex 3 is connected to: 0 (5) 1 (15) 2 (4)
-
-Krushkal:
-Edge 1: (2, 3) cost: 4
-Edge 2: (0, 3) cost: 5
-Edge 3: (0, 1) cost: 10
-Minimum cost: 19
+Enter no. of vertices and edges: 4 5
+0 1 10
+0 2 6
+0 3 5
+1 3 15
+2 3 4
+MST:
+0 3 5
+2 3 4
+0 1 10
 */
