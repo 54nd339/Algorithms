@@ -12,7 +12,11 @@ graph *createGraph(int vertices, int edges) {
     g->adjMatrix = malloc(vertices * sizeof(int *));
     for (int i = 0; i < vertices; i++) {
         g->adjMatrix[i] = malloc(vertices * sizeof(int));
+        for (int j = 0; j < vertices; j++) {
+            g->adjMatrix[i][j] = 0;
+        }
     }
+
     int src, dest, weight;
     for (int i = 0; i < edges; i++) {
         printf("Enter edge %d: ", i);
