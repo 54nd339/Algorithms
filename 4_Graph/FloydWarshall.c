@@ -33,7 +33,7 @@ void printGraph(graph *g) {
     }
 }
 
-void floyydMarshall(graph *g) {
+void floyydWarshall(graph *g) {
     int **dist = malloc(g->vertices * sizeof(int *));
     for (int i = 0; i < g->vertices; i++) {
         dist[i] = malloc(g->vertices * sizeof(int));

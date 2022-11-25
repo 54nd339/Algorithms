@@ -79,7 +79,7 @@ void Union(subset *subsets, int x, int y) {
 }
 
 void KruskalMST(heap *h, int V) {
-    edge result[V];
+    edge *result = malloc(V*sizeof(edge));
     subset *subsets = (subset *)malloc(V * sizeof(subset));
     for (int v = 0; v < V; ++v) {
         subsets[v].parent = v;

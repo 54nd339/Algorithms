@@ -1,8 +1,14 @@
-Basic Graph (BFS, DFS)
+Basic Graph Traverse Algorithms:
+    Depth First Search (DFS)
+    Breadth First Search (BFS)
+
 Single-source Shortest Paths:
     Dijkstra's Algorithm
-All-pairs Shortest Paths:
-    Floyd-Warshall Algorithm
+    Bellman-Ford Algorithm
+
 Minimum Spanning Trees:
-    Krushkal's Algorithm
     Prim's Algorithm
+    Kruskal's Algorithm
+
+All-Pairs Shortest Paths:
+    Floyd-Warshall Algorithm
