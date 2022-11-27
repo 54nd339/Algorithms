@@ -5,7 +5,6 @@ typedef struct node {
     int data;
     struct node *next;
 } node;
-
 typedef struct graph {
     int vertices;
     node **adjList;
@@ -17,7 +16,6 @@ node *createNode(int data) {
     newNode->next = NULL;
     return newNode;
 }
-
 graph *createGraph(int vertices) {
     graph *newGraph = (graph *) malloc(sizeof(graph));
     newGraph->vertices = vertices;

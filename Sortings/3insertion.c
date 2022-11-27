@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void insertionSort(int *arr, int n) {
 	for (int i = 1; i < n; i++) {
 		int key = arr[i], j = i-1;
@@ -31,5 +32,9 @@ int main() {
     insertionSort(ar, n);
 	printf("Sorted array : ");
 	print(ar, n);
+
 	return 0;
 }
+
+// Time Complexity: O(n^2), θ(n^2), Ω(n)
+// Space Complexity: O(1)

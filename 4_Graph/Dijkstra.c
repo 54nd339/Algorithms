@@ -14,12 +14,11 @@ typedef struct graph {
 
 graph *createGraph(int vertices, int edges) {
     graph *g = malloc(sizeof(graph));
-    g->V = vertices;
-    g->E = edges;
+    g->V = vertices; g->E = edges;
     g->edge = malloc(edges * sizeof(Edge));
 
+    printf("Enter edges (u v w):\n");
     for (int i = 0; i < edges; i++) {
-        printf("Enter edge %d: ", i);
         scanf("%d %d %d", &g->edge[i].u, &g->edge[i].v, &g->edge[i].w);
     }
     return g;
@@ -82,18 +81,17 @@ int main() {
     Dijkstra(g, start);
     return 0;
 }
-
 /*
 Enter number of vertices: 5
 Enter number of edges: 7
-Enter edge 0: 0 1 2
-Enter edge 1: 0 3 6
-Enter edge 2: 1 2 3
-Enter edge 3: 1 3 8
-Enter edge 4: 1 4 5
-Enter edge 5: 2 4 7
-Enter edge 6: 3 4 9
-
+Enter edges (u v w):
+0 1 2
+0 2 4
+0 3 1
+1 2 3
+1 4 10
+2 3 2
+3 4 7
 Graph:
 Edge 0: 0 -> 1 (2)
 Edge 1: 0 -> 3 (6)

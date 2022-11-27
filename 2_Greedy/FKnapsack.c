@@ -4,34 +4,24 @@ typedef struct Item {
     int value, weight;
 }item;
  
-void sort(item *a, int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if ((double)a[i].value/a[i].weight < 
-                (double)a[j].value/a[j].weight) {
-                item temp = a[i];
-                a[i] = a[j];
-                a[j] = temp;
-            }
-        }
-    }
+int cmp(const void *a, const void *b) {
+    return ((item *)b)->value - ((item *)a)->value;
 }
- 
 double fractionalKnapsack(int W, item arr[], int n) {
-    sort(arr, n);
-    double finalvalue = 0.0;
+    qsort(arr, n, sizeof(item), cmp);
+    double res = 0.0;
  
     for (int i = 0; i < n; i++) {
         if (arr[i].weight <= W) {
             W -= arr[i].weight;
-            finalvalue += arr[i].value;
+            res += arr[i].value;
         }
         else {
-            finalvalue += arr[i].value * ((double)W / arr[i].weight);
+            res += arr[i].value * ((double)W / arr[i].weight);
             break;
         }
     } 
-    return finalvalue;
+    return res;
 }
  
 int main() {

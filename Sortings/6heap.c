@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void swap(int* a, int* b) {
 	int t = *a;
 	*a = *b;
@@ -18,7 +19,6 @@ void heapify(int *arr, int n, int i){
         heapify(arr, n, largest);
     }
 }
- 
 void heapSort(int *arr, int n) {
     for (int i = n / 2 - 1; i >= 0; i--)
         heapify(arr, n, i);
@@ -34,7 +34,6 @@ void print(int *arr, int size) {
 		printf("%d ", arr[i]);
 	printf("\n");
 }
-
 int main() {
     printf("Enter no. of elements : ");
     int n; scanf("%d", &n);
@@ -51,3 +50,6 @@ int main() {
 	print(ar, n);
 	return 0;
 }
+
+// Time Complexity: O(nlogn), θ(nlogn), Ω(nlogn)
+// Space Complexity: O(1)

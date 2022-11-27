@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 typedef struct graph {
     int vertices, edges;
     int **adjMatrix;
@@ -12,9 +13,10 @@ graph *createGraph(int vertices, int edges) {
     for (int i = 0; i < vertices; i++) {
         g->adjMatrix[i] = malloc(vertices * sizeof(int));
     }
+
     int src, dest, weight;
+    printf("Enter edges (u v w):\n");
     for (int i = 0; i < edges; i++) {
-        printf("Enter edge %d: ", i);
         scanf("%d %d %d", &src, &dest, &weight);
         g->adjMatrix[src][dest] = weight;
         g->adjMatrix[dest][src] = weight;
@@ -25,9 +27,8 @@ void printGraph(graph *g) {
     for (int i = 0; i < g->vertices; i++) {
         printf("Vertex %d is connected to: ", i);
         for (int j = 0; j < g->vertices; j++) {
-            if (g->adjMatrix[i][j] != 0) {
+            if (g->adjMatrix[i][j] != 0)
                 printf("%d (%d) ", j, g->adjMatrix[i][j]);
-            }
         }
         printf("\n");
     }
@@ -40,6 +41,7 @@ void floyydWarshall(graph *g) {
         for (int j = 0; j < g->vertices; j++)
             dist[i][j] = g->adjMatrix[i][j];
     }
+
     for (int k = 0; k < g->vertices; k++) {
         for (int i = 0; i < g->vertices; i++) {
             for (int j = 0; j < g->vertices; j++) {
@@ -48,10 +50,10 @@ void floyydWarshall(graph *g) {
             }
         }
     }
+
     for (int i = 0; i < g->vertices; i++) {
-        for (int j = 0; j < g->vertices; j++) {
+        for (int j = 0; j < g->vertices; j++)
             printf("%d ", dist[i][j]);
-        }
         printf("\n");
     }
 }
@@ -66,17 +68,18 @@ int main() {
     printGraph(g);
     printf("\nFloyd-Marshall:\n");
     floyydMarshall(g);
+
     return 0;
 }
-
 /*
 Enter number of vertices: 4
 Enter number of edges: 5
-Enter edge 0: 0 1 5
-Enter edge 1: 0 3 10
-Enter edge 2: 1 2 3
-Enter edge 3: 2 3 1
-Enter edge 4: 3 1 2
+Enter edges (u v w):
+0 1 5
+0 3 10
+1 2 3
+2 3 1
+3 2 -2
 
 Graph:
 Vertex 0 is connected to: 1 (5) 3 (10)

@@ -121,7 +121,6 @@ int main() {
     HuffmanCodes(data, freq, n);
     return 0;
 }
-
 /*
 Enter the number of characters : 5
 Enter the characters and frequencies :

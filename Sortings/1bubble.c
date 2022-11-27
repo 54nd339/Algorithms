@@ -35,3 +35,6 @@ int main() {
 	print(ar, n);
 	return 0;
 }
+
+// Time Complexity: O(n^2), θ(n^2), Ω(n^2)
+// Space Complexity: O(1)

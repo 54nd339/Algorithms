@@ -5,9 +5,7 @@ typedef struct Job {
     int ind, deadline, profit;
 }job;
 int cmp(const void *a, const void *b) {
-    job *x = (job *)a;
-    job *y = (job *)b;
-    return y->profit - x->profit;
+    return ((job *)b)->profit - ((job *)a)->profit;
 }
 
 int main() {
@@ -36,9 +34,8 @@ int main() {
         for (int j = arr[i].deadline - 1; j >= 0; j--) {
             if (slot[j] == -1) {
                 slot[j] = arr[i].ind;
-                count++;
                 profit += arr[i].profit;
-                break;
+                count++; break;
             }
         }
     }

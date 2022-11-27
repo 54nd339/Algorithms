@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void swap(int* a, int* b) {
 	int t = *a;
 	*a = *b;
@@ -49,3 +50,6 @@ int main() {
 	print(ar, n);
 	return 0;
 }
+
+// Time Complexity: O(n^2), θ(nlogn), Ω(nlogn)
+// Space Complexity: O(logn) (for recursion)

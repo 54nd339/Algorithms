@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 void swap(int *xp, int *yp) {
 	int temp = *xp;
 	*xp = *yp;
@@ -7,12 +8,12 @@ void swap(int *xp, int *yp) {
 }
 
 void selectionSort(int arr[], int n) {
-	int min_ind;
-    for (int i = 0; i < n-1; i++) {
-        min_ind = i;
-		for (int j = i+1; j < n; j++)
+	for (int i = 0; i < n-1; i++) {
+        int min_ind = i;
+		for (int j = i+1; j < n; j++) {
             if (arr[j] < arr[min_ind])
                 min_ind = j;
+        }
         swap(&arr[min_ind], &arr[i]);
 	}
 }
@@ -39,3 +40,6 @@ int main() {
 	print(ar, n);
 	return 0;
 }
+
+// Time Complexity: O(n^2), θ(n^2), Ω(n^2)
+// Space Complexity: O(1)

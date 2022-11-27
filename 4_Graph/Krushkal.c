@@ -4,22 +4,22 @@
 typedef struct edge {
     int u, v, w;
 } edge;
-
 typedef struct heap {
-    int size; // no. of edges
+    int size;
     edge *arr;
 } heap;
-
 void swap(edge *a, edge *b) {
     edge t = *a;
     *a = *b;
     *b = t;
 }
-// min-heapify
+
 void heapify(heap *h, int i) {
     int smallest = i, l = 2*i+1, r = 2*i+2;
-    if (l < h->size && h->arr[l].w < h->arr[smallest].w) smallest = l;
-    if (r < h->size && h->arr[r].w < h->arr[smallest].w) smallest = r;
+    if (l < h->size && h->arr[l].w < h->arr[smallest].w)
+        smallest = l;
+    if (r < h->size && h->arr[r].w < h->arr[smallest].w)
+        smallest = r;
     if (smallest != i) {
         swap(&(h->arr[i]), &(h->arr[smallest]));
         heapify(h, smallest);
@@ -111,7 +111,6 @@ int main() {
         scanf("%d %d %d", &(h.arr[i].u), &(h.arr[i].v), &(h.arr[i].w));
         insertNode(&h, h.arr[i]);
     }
-
     printf("MST:\n");
     KruskalMST(&h, V);
     return 0;

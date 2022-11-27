@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 void search(int arr[], int n, int x) {
     int left = 0, right = n - 1;
-    int index = -1;
-       
+    int index = -1;      
     for(left = 0; left <= right;) {
         if (arr[left] == x) {
             index = left; break;
@@ -20,7 +21,7 @@ void search(int arr[], int n, int x) {
 int main() {
     printf("Enter the size of array : ");
     int n; scanf("%d", &n);
-    int arr[n];
+    int *arr = (int *)malloc(n * sizeof(int));
     printf("Enter array elements : ");
     for(int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
@@ -29,3 +30,6 @@ int main() {
     search(arr, n, ele);
     return 0;
 }
+
+// Time Complexity: O(n), θ(n), Ω(1)
+// Space Complexity: O(1)

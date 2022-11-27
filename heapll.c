@@ -12,7 +12,6 @@ Heap *createHeap(int data) {
     return newHeap;
 }
 
-
 void insertNode(Heap *h, int Key) {
     if (h == NULL) {
         h = createHeap(Key);
